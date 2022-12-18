@@ -1,20 +1,74 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useFilters, useTable, usePagination } from "react-table";
 
 import "./table.css";
 
 export default function Table({ columns, data }) {
 
-  //..........enable search START............//
+  // enable search by name functionality
   const [filterInput, setFilterInput] = useState("");
-
-  // Update the state when input changes
   const handleFilterChange = e => {
     const value = e.target.value || undefined;
     setFilter("name", value); // Update the name filter. Now our table will filter and show only the rows which have a matching value
     setFilterInput(value);
   };
-  //.............END.............//
+
+  // Create editable column
+  const [dataRows, setData] = useState(data);
+  const [skipPageReset, setSkipPageReset] = useState(false);
+  // Editable cell code
+  const updateMyData = (rowIndex, columnId, value) => {
+    setSkipPageReset(true);
+    setData(old =>
+        old.map((row, index) => {
+          if (index === rowIndex) {
+            return {
+              ...old[rowIndex],
+              [columnId]: value,
+            };
+          }
+          return row;
+        })
+    );
+  };
+
+  // Create an editable cell renderer
+  const EditableCell = ({
+    value: initialValue,
+    row: { index },
+    column: { id },
+    updateMyData,
+  }) => {
+    const [value, setValue] = useState(initialValue);
+
+    const onChange = e => {
+      setValue(e.target.value);
+    };
+
+    const onBlur = () => {
+      updateMyData(index, id, value);
+    };
+
+    useEffect(() => {
+      setValue(initialValue);
+    }, [initialValue]);
+
+    // Check to make sure not all columns are editable
+    if (id === "name") {
+      return <input value={value} onChange={onChange} onBlur={onBlur} />;
+    }
+    return value;
+  };
+
+  const defaultColumn = {
+    Cell: EditableCell,
+  };
+
+
+  useEffect(() => {
+    setSkipPageReset(false);
+    console.log(dataRows);
+  }, [dataRows]);
 
  const {
     getTableProps,
@@ -36,7 +90,9 @@ export default function Table({ columns, data }) {
       {
         columns,
         data,
-        // initialState: { pageIndex: 2 }
+        defaultColumn,
+        autoResetPage: !skipPageReset,
+        updateMyData,
       },
         useFilters,
         usePagination
@@ -50,7 +106,6 @@ export default function Table({ columns, data }) {
           value={filterInput}
           onChange={handleFilterChange}
           placeholder={"Search city by the name ..."}
-          size="value.length"
         />
       </div>
       <table {...getTableProps()}>
