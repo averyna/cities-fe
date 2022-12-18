@@ -1,28 +1,17 @@
-import React, {useEffect, useState} from "react";
-import axios from "axios";
+import React from "react";
+import {connect, useDispatch} from "react-redux";
 import CityPhoto from "./CityPhoto";
 import Table from "./Table";
+import { fetchCities } from "../redux/actionDispatchers";
 
-const TableContainer = () => {
-  // ........... to get data from BE START.................//
-  const [cities, setCities] = useState([]);
-  const fetchCities = () => {
-    axios.get('http://localhost:8099/cities').then(res => {
-      console.log(res);
-      setCities(res.data);
-    });
+const TableContainer = (props) => {
+
+  const {data, loading, error} = props.cityData;
+  const dispatch = useDispatch();
+
+  if (data.length === 0 && !loading) {
+    dispatch(fetchCities());
   }
-
-  useEffect(() => {
-    fetchCities();
-  }, []);
-
-  // ........... to get data from BE END.................//
-
-  /*
-    - Columns is a simple array right now, but it will contain some logic later on. It is recommended by react-table to memoize the columns data
-    - Here in this example, we have grouped our columns into two headers. react-table is flexible enough to create grouped table headers
-  */
 
   const columns = [
         {
@@ -44,7 +33,11 @@ const TableContainer = () => {
           ]
         }
       ];
-  return (<Table columns={columns} data={cities}/>);
+  return (<Table columns={columns} data={data}/>);
 }
 
-export default TableContainer;
+const mapStateToProps = state => ({
+  cityData: state.cityReducer,
+});
+
+export default connect(mapStateToProps)(TableContainer);
