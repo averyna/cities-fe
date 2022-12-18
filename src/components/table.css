@@ -1,0 +1,55 @@
+table {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: separate;
+  width: 100%;
+  table-layout:fixed;
+  padding: 50px 50px 50px 50px;
+}
+
+table td,
+table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+/*table tr {*/
+/*  height: 300px;*/
+/*}*/
+
+table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+table tr:hover {
+  background-color: #ddd;
+}
+
+table th,
+tfoot td {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+  background-color: #000;
+  color: white;
+}
+
+img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+ #pagination {
+   padding-bottom: 50px;
+ }
+
+ #search {
+   padding-top: 50px;
+   width: content-box;
+ }
+
+ input {
+   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+   border-style: double;
+   border-color: black;
+   width: 20%;
+ }
