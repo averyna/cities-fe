@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import cityReducer from "./reducer";
+import fetchCitiesReducer from "./fetchCitiesReducer";
 
 export default combineReducers({
-  cityReducer
+  fetchCitiesReducer,
 });

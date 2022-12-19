@@ -33,11 +33,11 @@ const TableContainer = (props) => {
           ]
         }
       ];
-  return (<Table columns={columns} data={data}/>);
+  return (<Table columns={columns} dispatch />);
 }
 
 const mapStateToProps = state => ({
-  cityData: state.cityReducer,
+  cityData: state.fetchCitiesReducer,
 });
 
 export default connect(mapStateToProps)(TableContainer);

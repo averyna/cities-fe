@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {useFilters, useTable, usePagination } from "react-table";
-
-import "./table.css";
 import Pagination from "./Pagination";
+import {connect} from "react-redux";
+import {editCity} from "../redux/actionDispatchers";
+import "../styles/table.css";
 
-export default function Table({ columns, data }) {
+const Table = ({ columns, cityData, dispatch }) => {
+  const data = cityData.data;
 
   // enable search by name functionality
   const [filterInput, setFilterInput] = useState("");
@@ -14,31 +16,18 @@ export default function Table({ columns, data }) {
     setFilterInput(value);
   };
 
-  // Create editable column
-  const [dataRows, setData] = useState(data);
   const [skipPageReset, setSkipPageReset] = useState(false);
-  // Editable cell code
-  const updateMyData = (rowIndex, columnId, value) => {
+
+  const editRowData = (rowIndex, columnId, value) => {
+    dispatch(editCity(rowIndex, columnId, value, data));
     setSkipPageReset(true);
-    setData(old =>
-        old.map((row, index) => {
-          if (index === rowIndex) {
-            return {
-              ...old[rowIndex],
-              [columnId]: value,
-            };
-          }
-          return row;
-        })
-    );
   };
 
-  // Create an editable cell renderer
   const EditableCell = ({
     value: initialValue,
     row: { index },
     column: { id },
-    updateMyData,
+    editRowData,
   }) => {
     const [value, setValue] = useState(initialValue);
 
@@ -47,7 +36,7 @@ export default function Table({ columns, data }) {
     };
 
     const onBlur = () => {
-      updateMyData(index, id, value);
+      editRowData(index, id, value);
     };
 
     useEffect(() => {
@@ -68,8 +57,7 @@ export default function Table({ columns, data }) {
 
   useEffect(() => {
     setSkipPageReset(false);
-    console.log(dataRows);
-  }, [dataRows]);
+  }, []);
 
  const {
     getTableProps,
@@ -93,7 +81,7 @@ export default function Table({ columns, data }) {
         data,
         defaultColumn,
         autoResetPage: !skipPageReset,
-        updateMyData,
+        editRowData,
       },
         useFilters,
         usePagination
@@ -143,3 +131,9 @@ export default function Table({ columns, data }) {
     </>
   );
 }
+
+const mapStateToProps = state => ({
+  cityData: state.fetchCitiesReducer,
+});
+
+export default connect(mapStateToProps)(Table);

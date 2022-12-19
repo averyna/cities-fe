@@ -3,7 +3,7 @@ const initialState = {
   loading: false,
   error: {},
 };
-export default function reducer(state = initialState, action) {
+export default function fetchCitiesReducer(state, action) {
   switch(action.type) {
     case "FETCH_DATA_REQUEST":
       return {
