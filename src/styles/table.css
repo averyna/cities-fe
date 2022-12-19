@@ -8,13 +8,9 @@ table {
 
 table td,
 table th {
-  border: 1px solid #ddd;
+  border: 1px solid #000;
   padding: 8px;
 }
-
-/*table tr {*/
-/*  height: 300px;*/
-/*}*/
 
 table tr:nth-child(even) {
   background-color: #f2f2f2;

@@ -1,10 +1,10 @@
 import React from "react";
 import {connect, useDispatch} from "react-redux";
-import CityPhoto from "./CityPhoto";
-import Table from "./Table";
+import CityPhoto from "./CityPhoto.jsx";
+import Table from "./Table.jsx";
 import { fetchCities } from "../redux/actionDispatchers";
 
-const TableContainer = (props) => {
+const TableContainer = props => {
 
   const {data, loading, error} = props.cityData;
   const dispatch = useDispatch();

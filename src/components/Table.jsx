@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {useFilters, useTable, usePagination } from "react-table";
-import Pagination from "./Pagination";
 import {connect} from "react-redux";
-import {editCity} from "../redux/actionDispatchers";
+import Pagination from "./Pagination.jsx";
+import { editCity } from "../redux/actionDispatchers.js";
 import "../styles/table.css";
 
 const Table = ({ columns, cityData, dispatch }) => {
@@ -87,7 +87,7 @@ const Table = ({ columns, cityData, dispatch }) => {
         usePagination
  );
 
-  return (<>
+  return (<div id="container">
       <div id="search">
         <input
           value={filterInput}
@@ -128,7 +128,7 @@ const Table = ({ columns, cityData, dispatch }) => {
         pageOptions = {pageOptions}
         setPageSize = {setPageSize}
         />
-    </>
+    </div>
   );
 }
 
