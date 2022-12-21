@@ -35,8 +35,11 @@ export function editCity(rowIndex, columnId, newValue, data) {
   return dispatch => {
     axios.put(`http://localhost:8099/cities/${newRow.id}`, newRow)
     .then(response => {
-      if (response.data === true) {
-        dispatch(fetchDataSuccess(newData));
+      if (response.status === 200) {
+        const list = {
+          list: newData,
+        }
+        dispatch(fetchDataSuccess(list));
       }
     })
     .catch(error => {

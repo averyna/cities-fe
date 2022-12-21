@@ -14,7 +14,7 @@ export default function fetchCitiesReducer(state, action) {
       return {
         ...state,
         loading: false,
-        data: action.data,
+        data: action.data.list,
       }
     case "FETCH_DATA_ERROR":
       return {
